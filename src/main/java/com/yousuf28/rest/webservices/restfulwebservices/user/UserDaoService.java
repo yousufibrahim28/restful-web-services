@@ -2,6 +2,7 @@ package com.yousuf28.rest.webservices.restfulwebservices.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -14,9 +15,9 @@ public class UserDaoService {
     private static int usersCount = 0;
 
     static {
-        users.add(new User(++usersCount,"Adam", LocalDate.now().minusYears(30)));
-        users.add(new User(++usersCount,"Eve", LocalDate.now().minusYears(25)));
-        users.add(new User(++usersCount,"Jim", LocalDate.now().minusYears(20)));
+        users.add(new User(++usersCount,"Adam", LocalDate.now().minusYears(30), Arrays.asList(new Post())));
+        users.add(new User(++usersCount,"Eve", LocalDate.now().minusYears(25),Arrays.asList(new Post())));
+        users.add(new User(++usersCount,"Jim", LocalDate.now().minusYears(20),Arrays.asList(new Post())));
     }
 
     public List<User> findAll() {

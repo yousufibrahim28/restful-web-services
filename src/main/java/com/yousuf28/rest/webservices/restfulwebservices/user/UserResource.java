@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,15 +22,18 @@ public class UserResource {
     public List<User> retrieveAllUsers(){
         return service.findAll();
     }
-
     @GetMapping(path = "/users/{id}")
-    public User retrieveUser(@PathVariable Integer id){
+    public EntityModel<User> retrieveUser(@PathVariable Integer id){
 
         User user = service.findOne(id);
         if(user==null) {
             throw new UserNotFoundException("id: " + id);
         }
-        return user;
+        EntityModel<User> entityModelUser = EntityModel.of(user);
+
+        WebMvcLinkBuilder link = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).retrieveAllUsers());
+        entityModelUser.add(link.withRel("all-users"));
+        return entityModelUser;
     }
 
     @PostMapping(path = "/users")
